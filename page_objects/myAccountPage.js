@@ -21,6 +21,10 @@ function myAccountPage(){
   this.mobilePhoneTextField = element(by.css("#phone_mobile"));
   this.submitAccount = element(by.css("#submitAccount"));
   this.accountName = element(by.css(".account"));
+  this.emailTextField = element(by.css("#email"));
+  this.passwordTextField = element(by.css("#passwd"));
+  this.signInAccountButton = element(by.css(".icon-lock"));
+  this.signOutButton = element(by.css(".logout"));
 
 
    this.createNewAccountWithouthMail = () => {
@@ -30,6 +34,12 @@ function myAccountPage(){
    this.createNewAccountWithWrongMail = () => {
      util.writeText(this.newAccountEmailTextField, util.getWrongMail());
      util.clickElement(this.createAccountButton);
+   }
+
+   this.loginWithValidAccount = () => {
+     util.writeText(this.emailTextField,"todoyo@gmail.com");
+     util.writeText(this.passwordTextField,"wizeline123");
+     util.clickElement(this.signInAccountButton);
    }
 
    this.createNewAccount = () => {
@@ -52,11 +62,17 @@ function myAccountPage(){
    }
 
    this.isAccountSuccessfullyCreated = () =>{
-     return util.elementVisible(this.accountName);
+     var elementPresent=util.elementVisible(this.accountName);
+     util.clickElement(this.signOutButton);
+     return elementPresent;
    }
 
    this.isinvalidMailMessageDisplayed = () =>{
      return util.elementVisible(this.invalidMailAddresLabel);
+   }
+
+   this.isAccountLoggedIn = () =>{
+     return this.isAccountSuccessfullyCreated();
    }
 
 
