@@ -38,6 +38,11 @@ const Actions = function () {
     return mail=mail+'@any.com';
   }
 
+  this.getWrongMail = function (){
+    var wrongMail = this.getMail();
+    return wrongMail.slice(0,7);
+  }
+
 
 
 }
