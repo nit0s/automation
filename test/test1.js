@@ -11,14 +11,14 @@ describe("Accesing the main page",function(){
       expect( mainPage.isLoginPageDisplayed()).toBe(true);
     });
 
-    it("not create account without mail", function() {
+    it("New Account should not be created without mail", function() {
       mainPage.enterIntoLoginPage();
       mainPage.createNewAccountWithouthMail();
       expect(mainPage.isinvalidMailMessageDisplayed()).toBe(true);
 
     });
 
-    it("create a new Account ", function() {
+    it("Create a new Account ", function() {
       mainPage.enterIntoLoginPage();
       mainPage.createNewAccount();
       expect(mainPage.isAccountSuccessfullyCreated()).toBe(true);
