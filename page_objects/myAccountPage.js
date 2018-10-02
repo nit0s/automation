@@ -28,13 +28,13 @@ function myAccountPage(){
    }
 
    this.createNewAccountWithWrongMail = () => {
-     util.writeText(this.newAccountEmailTextField,util.getWrongMail());
+     util.writeText(this.newAccountEmailTextField, util.getWrongMail());
      util.clickElement(this.createAccountButton);
    }
 
    this.createNewAccount = () => {
      util.writeText(this.newAccountEmailTextField, util.getMail());
-     util.clickButton(this.createAccountButton);
+     util.clickElement(this.createAccountButton);
      util.clickElement(this.titleRadioButton);
      util.writeText(this.fNameTextField,"carlos");
      util.writeText(this.lNameTexField,"becerra");

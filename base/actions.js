@@ -11,7 +11,7 @@ const Actions = function () {
 
   this.elementVisible = function (element){
     var isVisible = EC.visibilityOf(element);
-    browser.wait(isVisible, 7000);
+    browser.wait(isVisible, 9000);
     return element.isDisplayed();
   }
 
