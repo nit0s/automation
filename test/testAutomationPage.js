@@ -37,6 +37,12 @@ describe("Actions for automation page practice",function(){
       expect(myAccountPage.isAccountLoggedIn()).toBe(true);
     });
 
+    it("An invalid  Account can't access ", function() {
+      indexPage.enterIntoLoginPage();
+      myAccountPage.loginWithInvalidAccount();
+      expect(myAccountPage.isinvalidMailMessageDisplayed()).toBe(true);
+    });
+
 
 
 

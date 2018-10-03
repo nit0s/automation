@@ -42,6 +42,12 @@ function myAccountPage(){
      util.clickElement(this.signInAccountButton);
    }
 
+   this.loginWithInvalidAccount = () => {
+     util.writeText(this.emailTextField,"notexist@mail.com");
+     util.writeText(this.passwordTextField,"noidea");
+     util.clickElement(this.signInAccountButton);
+   }
+
    this.createNewAccount = () => {
      util.writeText(this.newAccountEmailTextField, util.getMail());
      util.clickElement(this.createAccountButton);
