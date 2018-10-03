@@ -1,0 +1,670 @@
+{
+	"info": {
+		"_postman_id": "35cf0570-cfb8-42f3-aa5a-b2608767f830",
+		"name": "toDoISt_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "mochaGet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1d629b4d-36c5-4955-aab2-a7198a0e7c2e",
+						"type": "text/javascript",
+						"exec": [
+							"postman.setGlobalVariable('postmanBDD', responseBody);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://bigstickcarpet.com/postman-bdd/dist/postman-bdd.min.js",
+					"protocol": "http",
+					"host": [
+						"bigstickcarpet",
+						"com"
+					],
+					"path": [
+						"postman-bdd",
+						"dist",
+						"postman-bdd.min.js"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllProjects",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f6859ebf-e11f-42b1-ad84-c035430c7c61",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"/*afer get all projects ",
+							"this function capture the last element",
+							"and save it on projectID global variable",
+							"*/",
+							"var size = response.body.length;",
+							"pm.environment.set(\"projectId\", response.body[size-1].id);",
+							"",
+							"/*bellow are declared the common test for Run along all the collection",
+							"the way to call it is using eval(globals.commonTests)();",
+							"*/",
+							"postman.setGlobalVariable(\"commonTests\", (testsInput) => { ",
+							"    ",
+							"    describe (\"Common Test\", () => {",
+							"    ",
+							"  it (\"the response have correct status\", () => {",
+							"      pm.response.to.have.status(200);",
+							"      })",
+							"  it (\"the response is less than 1000 ms\", () => {",
+							"      pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"      })",
+							"      ",
+							"    });",
+							"});",
+							"",
+							"eval(globals.commonTests)();",
+							"//particular tcs for getAllProjects",
+							"describe (\"All projects response test\", () => {",
+							"    ",
+							"  it (\"The response contains at least one project\", () => {",
+							"      pm.expect(size != 0).to.be.true;",
+							"      })",
+							"    });",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"description": "header token"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/projects",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newProject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "46cbdec5-55b5-4505-ac58-90fe5cb740fb",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"eval(globals.commonTests)();",
+							"//setting projectID and projectName as global variables",
+							"pm.environment.set(\"projectId\", response.body.id);",
+							"pm.environment.set(\"projectName\", response.body.name);",
+							"",
+							"//particular tcs",
+							"describe (\"new project response test\", () => {",
+							"    ",
+							"  it (\"the new project contains ID\", () => {",
+							"      pm.expect(response.body.id).to.not.be.null;",
+							"      })",
+							"  it (\"the new project contains name\", () => {",
+							"      pm.expect(response.body.name).to.not.be.empty;",
+							"      })",
+							"    });"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"otherProject\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}API/v8/projects",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "60b1c383-ea92-4585-b7fa-172e4e647fca",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"eval(globals.commonTests)();",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/projects/{{projectId}}",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"projects",
+						"{{projectId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteProject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "406d2e8c-ce88-42a7-aea0-4d40b3e047dc",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"/*this request is not using the common test and implementing",
+							"his own since the response for correct deleted status is different*/",
+							"",
+							"postman.setGlobalVariable(\"commonTestsb\", (testsInput) => {",
+							"describe (\"Validations on project/task deleted\", () => {",
+							"    it (\"the response have correct status\", () => {",
+							"      pm.response.to.have.status(204);",
+							"      })",
+							"  it (\"the response is less than 2000 ms\", () => {",
+							"      pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"      })",
+							"      ",
+							"  it (\"the response should not contains body\", () => {",
+							"      pm.expect(response.body).to.be.empty;",
+							"      })",
+							"    ",
+							"   });//describe end",
+							"});//global method end",
+							"",
+							"//particular tcs for deleted project",
+							"eval(globals.commonTestsb)();",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/projects/{{projectId}}",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"projects",
+						"{{projectId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "activeTasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7258d97f-381f-4bb2-b866-154de76b2c42",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"",
+							"/*afer get all active tasks ",
+							"this function capture the last element",
+							"and save it on taskID variable",
+							"*/",
+							"var size = response.body.length;",
+							"pm.environment.set(\"taskId\", response.body[size-1].id);",
+							"",
+							"eval(globals.commonTests)();",
+							"//particulas tcs for activeTasks",
+							"",
+							"describe (\"All tasks response test\", () => {",
+							"    ",
+							"  it (\"The response contains at least one task\", () => {",
+							"      pm.expect(size != 0).to.be.true;",
+							"      })",
+							"    });"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a7affae-5dcf-4016-93f6-9498d226f92f",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"eval(globals.commonTests)();",
+							"describe (\"Validate response new task created\", () => {",
+							"    ",
+							"  it (\"the new task contains ID\", () => {",
+							"      pm.expect(response.body.id).to.not.be.null;",
+							"      })",
+							"  it (\"the new task have content text\", () => {",
+							"      pm.expect(response.body.content).to.not.be.empty;",
+							"      })",
+							"  it (\"the new task is not completed\", () => {",
+							"      pm.expect(response.body.completed).to.be.false;",
+							"      })",
+							"",
+							"    ",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"content\" : \"an example task\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7099b3bd-c159-4a35-89c9-a76d526372f6",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"",
+							"//function to get the id task currently created",
+							"pm.environment.set(response.body.id);",
+							"",
+							"//particulas tcs",
+							"eval(globals.commonTests)();",
+							"",
+							"describe (\"Validate response get task\", () => {",
+							"    ",
+							"  it (\"the  task is having project ID\", () => {",
+							"      pm.expect(response.body.project_id).to.not.be.null;",
+							"      })",
+							"  it (\"the  task have content text\", () => {",
+							"      pm.expect(response.body.content).to.not.be.empty;",
+							"      })",
+							"  ",
+							"",
+							"    ",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks/{{taskId}}",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a049cb47-c2ad-4233-bd33-66d1b11c8b71",
+						"type": "text/javascript",
+						"exec": [
+							"//204 is the answer but without response",
+							"eval(globals.postmanBDD);",
+							"describe (\"Validations on task updated\", () => {",
+							"    it (\"the response have correct status\", () => {",
+							"      pm.response.to.have.status(204);",
+							"      })",
+							"  it (\"the response is less than 1000 ms\", () => {",
+							"      pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"      })",
+							"      ",
+							"  it (\"the response should not contains body\", () => {",
+							"      pm.expect(response.body).to.be.empty;",
+							"      })",
+							"    ",
+							"   });//describe end"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"content\" : \"this is a new content\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks/{{taskId}}",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CloseTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d84021d5-2903-4a62-8543-e8b0eba5724a",
+						"type": "text/javascript",
+						"exec": [
+							"//the ok response is 204",
+							"eval(globals.postmanBDD);",
+							"eval(globals.commonTestsb)();"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks/{{taskId}}/close",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks",
+						"{{taskId}}",
+						"close"
+					]
+				},
+				"description": "a request for closa a task:\n\nthe API call should be:\n$ curl -X POST \"https://beta.todoist.com/API/v8/tasks/1234/close\" \\\n    -H \"Authorization: Bearer $token\""
+			},
+			"response": []
+		},
+		{
+			"name": "reOpenTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "068d1786-376c-47d4-bac5-9b82f4759aaa",
+						"type": "text/javascript",
+						"exec": [
+							"//empty response and 204 is ok",
+							"eval(globals.postmanBDD);",
+							"eval(globals.commonTestsb)();"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks/{{taskId}}/reopen",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks",
+						"{{taskId}}",
+						"reopen"
+					]
+				},
+				"description": "this request is for re-open a task:\n$ curl -X POST \"https://beta.todoist.com/API/v8/tasks/1234/reopen\" \\\n    -H \"Authorization: Bearer $token\""
+			},
+			"response": []
+		},
+		{
+			"name": "deleteTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "03ba5a56-4954-49fb-8163-8638de887ecf",
+						"type": "text/javascript",
+						"exec": [
+							"eval(globals.postmanBDD);",
+							"eval(globals.commonTestsb)();"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b8afdfa032756ff2d7c497e909a7c947ca10bda2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{baseURL}}API/v8/tasks/{{taskId}}",
+					"host": [
+						"{{baseURL}}API"
+					],
+					"path": [
+						"v8",
+						"tasks",
+						"{{taskId}}"
+					]
+				},
+				"description": "method for remove a task:\n$ curl -X DELETE \"https://beta.todoist.com/API/v8/tasks/1234\" \\\n    -H \"Authorization: Bearer $token\""
+			},
+			"response": []
+		}
+	]
+}
